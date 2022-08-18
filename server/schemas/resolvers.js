@@ -33,10 +33,34 @@ const resolvers = {
           }
 
           const token = signToken(user);
-          return { token, profile };
+          return { token, user };
         },
+        saveBook: async (parent, { userId, book }, context) => {
+            if (context.user) {
+                return User.findOneAndUpdate(
+                    { _id: userId },
+                    {
+                        $addToSet: { savedBooks: book },
+                    },
+                    {
+                        new: true,
+                        runValidators: true,
+                    }
+                );
+            }
 
-
+            throw new AuthenticationError('You need to be logged in!');
+        },
+        deleteBook: async (parent, { book }, context) => {
+            if (context.user) {
+                return User.findOneAndUpdate(
+                    { _id: context.user._id},
+                    { $pull: { savedBooks: book } },
+                    { new: true }
+                );
+            }
+            throw new AuthenticationError('You need to be logged in!');
+        },
     },
 };
 
