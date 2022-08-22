@@ -1,113 +1,267 @@
 # bookSearchEngine
 taking starter code with a fully functioning Google Books API search engine built with a RESTful API, and refactoring it to be a GraphQL API built with Apollo Server.
 
-# Unit 21: MERN
+# 21 MERN: Book Search Engine
 
-## Overview
+## Your Task
 
-This week, you will use your skills in MongoDB, Express.js, React.js, and Node.js to develop the tools needed to build a full-stack MERN app.
+Your assignment this week is emblematic of the fact that most modern websites are driven by two things: data and user demands. This shouldn't come as a surprise, as the ability to personalize user data is the cornerstone of real-world web development today. And as user demands evolve, applications need to be more performant.
 
-You’ll use React Router to make the application behave more like a multi-page application, allowing users to bookmark URLs and use the browser’s forward and back buttons. You’ll also add GraphQL, an open-source data query and manipulation language for APIs that lets you fetch only the data you want from the database when you need it. Finally, you’ll learn how to use a JSON Web Token, or JWT, to add authentication to your site.
+This week, you’ll take starter code with a fully functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end. 
 
-## Key Topics
+To complete the assignment, you’ll need to do the following:
 
-The following topics will be covered in this unit:
+1. Set up an Apollo Server to use GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
 
-* [Apollo Sandbox](https://www.apollographql.com/docs/studio/explorer/sandbox/#publishing-schemas-from-sandbox)
+2. Modify the existing authentication middleware so that it works in the context of a GraphQL API.
 
-* [GraphQL Query](https://graphql.org/learn/queries/)
+3. Create an Apollo Provider so that requests can communicate with an Apollo Server.
 
-* [Resolvers](https://www.apollographql.com/docs/tutorial/resolvers/)
+4. Deploy your application to Heroku with a MongoDB database using MongoDB Atlas. Use the [Deploy with Heroku and MongoDB Atlas](https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-heroku-and-mongodb-atlas) walkthrough for instructions.
 
-* [Query parameters](https://graphql.org/graphql-js/passing-arguments/)
 
-* [Mutations](https://www.apollographql.com/docs/react/data/mutations/)
+## User Story
 
-* [useMutation Hook](https://www.apollographql.com/docs/tutorial/mutations/)
+```md
+AS AN avid reader
+I WANT to search for new books to read
+SO THAT I can keep a list of books to purchase
+```
 
-* [useQuery Hook](https://www.apollographql.com/docs/tutorial/queries/)
 
-* [React Router](https://reactrouter.com/docs/en/v6/getting-started/overview)
+## Acceptance Criteria
 
-* [JSON Web Tokens](https://jwt.io/introduction)
+```md
+GIVEN a book search engine
+WHEN I load the search engine
+THEN I am presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button
+WHEN I click on the Search for Books menu option
+THEN I am presented with an input field to search for books and a submit button
+WHEN I am not logged in and enter a search term in the input field and click the submit button
+THEN I am presented with several search results, each featuring a book’s title, author, description, image, and a link to that book on the Google Books site
+WHEN I click on the Login/Signup menu option
+THEN a modal appears on the screen with a toggle between the option to log in or sign up
+WHEN the toggle is set to Signup
+THEN I am presented with three inputs for a username, an email address, and a password, and a signup button
+WHEN the toggle is set to Login
+THEN I am presented with two inputs for an email address and a password and login button
+WHEN I enter a valid email address and create a password and click on the signup button
+THEN my user account is created and I am logged in to the site
+WHEN I enter my account’s email address and password and click on the login button
+THEN I the modal closes and I am logged in to the site
+WHEN I am logged in to the site
+THEN the menu options change to Search for Books, an option to see my saved books, and Logout
+WHEN I am logged in and enter a search term in the input field and click the submit button
+THEN I am presented with several search results, each featuring a book’s title, author, description, image, and a link to that book on the Google Books site and a button to save a book to my account
+WHEN I click on the Save button on a book
+THEN that book’s information is saved to my account
+WHEN I click on the option to see my saved books
+THEN I am presented with all of the books I have saved to my account, each featuring the book’s title, author, description, image, and a link to that book on the Google Books site and a button to remove a book from my account
+WHEN I click on the Remove button on a book
+THEN that book is deleted from my saved books list
+WHEN I click on the Logout button
+THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button  
+```
 
-* [Authentication in GraphQL API](https://www.apollographql.com/docs/apollo-server/security/authentication/)
 
-* [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
+## Mock-Up
 
-## Learning Objectives
+Let's start by revisiting the web application's appearance and functionality.
 
-You will be employer-ready if you are able to:
+As you can see in the following animation, a user can type a search term (in this case, "star wars") in a search box and the results appear:
 
-* Define a GraphQL schema and implement resolvers to handle data population.
+![Animation shows "star wars" typed into a search box and books about Star Wars appearing as results.](./Assets/21-mern-homework-demo-01.gif)
 
-* Write a GraphQL query to read data with and without parameters.
+The user can save books by clicking "Save This Book!" under each search result, as shown in the following animation:
 
-* Use a GraphQL mutation to create and update data.
+![Animation shows user clicking "Save This Book!" button to save books that appear in search results. The button label changes to "Book Already Saved" after it is clicked and the book is saved.](./Assets/21-mern-homework-demo-02.gif)
 
-* Execute queries and mutations using `useQuery()` and `useMutation()` Hooks.
+A user can view their saved books on a separate page, as shown in the following animation:
 
-* Update GraphQL's in-memory cache.
+![The Viewing Lernantino's Books page shows the books that the user Lernaninto has saved.](./Assets/21-mern-homework-demo-03.gif)
 
-* Implement client-side routing by using React Router.
 
-* Securely transmit data as a JSON object using JWT.
+## Getting Started
 
-* Implement server-side authentication in GraphQL API.
+In order for this application to use a GraphQL API, you’ll need to refactor the API to use GraphQL on the back end and add some functionality to the front end. The following sections contain details about the files you’ll need to modify on the back end and the front end.
 
-## Technical Interview Preparation
+**Important**: Make sure to study the application before building upon it. Better yet, start by making a copy of it. It's already a working application&mdash;you're converting it from RESTful API practices to a GraphQL API.
 
-You will be employer-competitive if you are able to solve the following algorithms and successfully complete the assessments.
+### Back-End Specifications
 
-### Algorithms
+You’ll need to complete the following tasks in each of these back-end files:
 
-Practicing algorithm-based interview questions is one of the best ways to prepare for interviews. Watch the `📹 Let's Code` video(s) for tips and tricks on how to solve the algorithm.
+* `auth.js: Update the auth middleware function to work with the GraphQL API.`
 
-* [01: Plus One](./03-Algorithms/01-plus-one)
+* `server.js: Implement the Apollo Server and apply it to the Express server as middleware.`
 
-* [02: One Edit Away](./03-Algorithms/02-one-edit-away)
+* `Schemas` directory:
 
-* [03: Caesar Cipher](./03-Algorithms/03-caesar-cipher)
+	* `index.js`: Export your typeDefs and resolvers.
 
-  * 📹 [Let's Code Caesar Cipher!](https://2u-20.wistia.com/medias/bcfetr7mvf)
+	* `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
 
-### Assessments
+		**Hint**: Use the functionality in the `user-controller.js` as a guide.
 
-Assess your knowledge by answering technical interview questions and solving coding challenges.
+	* `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
 
-* [Unit 21 Assessment](https://forms.gle/MgELRy6rvTXQz6M16)
+		* `Query` type:
 
-## Homework
+			* `me`: Which returns a `User` type.
+		
+		* `Mutation` type:
 
-As a developer, you will often be tasked with working with an existing codebase and updating the app to use a new technology. For this week's homework, you will take an existing book search engine that was built using a RESTful API and refactor it to use a GraphQL API.
+			* `login`: Accepts an email and password as parameters; returns an `Auth` type.
 
-## Career Connection
+			* `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
 
-Career services material for this unit is located in the [Career Connection folder](./04-Career-Connection/README.md). For more information about career services, including coding milestones, demo days, technical toolkits, workshops, and additional resources, visit the [career services website](https://careernetwork.2u.com/?utm_medium=Academics&utm_source=boot_camp/).
+			* `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
 
-## Heads-Up
+			* `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
+			
+		* `User` type:
 
-During the next unit, we build on our full-stack app development skills as we learn about state management and the Context API. We will also review the key concepts covered in this unit to help you prepare for your final project.
+			* `_id`
 
-Remember the Unit 22 Homework will be an optional assignment. It is not required for submission and your final grade will not be affected in any way. Next week's Homework is an opportunity for you to further practice your skills and get feedback on it.
+			* `username`
 
-## Resources
+			* `email`
 
-Here are some additional resources to help solidify the topics covered in this unit.
+			* `bookCount`
 
-### Git Guide
+			* `savedBooks` (This will be an array of the `Book` type.)
 
-Refer to the Git Guide to review the git concept for this unit. Watch the `📹 Git Guide` video for an additional walkthrough of the git concept.
+		* `Book` type:
 
-* 📖 [Git Guide: GitHub Actions](./01-Activities/27-Evr_GitHub-Actions)
+			* `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
 
-* 📹 [Git Guide Video: Github Actions](https://2u-20.wistia.com/medias/nlhzi3ktxc)
+			* `authors` (An array of strings, as there may be more than one author.)
 
-### Full-Stack Blog Posts
+			* `description`
 
-Check out the [Full-Stack Blog](https://coding-boot-camp.github.io/full-stack/) for additional resources, such as walkthroughs, articles, and installation guides.
+			* `title`
 
-* 📖 Blog Post: [Deploy with Heroku and MongoDB Atlas](https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-heroku-and-mongodb-atlas)
+			* `image`
+
+			* `link`
+
+		* `Auth` type:
+
+			* `token`
+
+			* `user` (References the `User` type.)
+
+
+### Front-End Specifications
+
+You'll need to create the following front-end files:
+
+* `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
+
+* `mutations.js`:
+
+	* `LOGIN_USER` will execute the `loginUser` mutation set up using Apollo Server.
+
+	* `ADD_USER` will execute the `addUser` mutation.
+
+	* `SAVE_BOOK` will execute the `saveBook` mutation.
+
+	* `REMOVE_BOOK` will execute the `removeBook` mutation.
+
+Additionally, you’ll need to complete the following tasks in each of these front-end files:
+
+* `App.js`: Create an Apollo Provider to make every request work with the Apollo Server.
+	
+* `SearchBooks.js`:
+
+	* Use the Apollo `useMutation()` Hook to execute the `SAVE_BOOK` mutation in the `handleSaveBook()` function instead of the `saveBook()` function imported from the `API` file.
+
+	* Make sure you keep the logic for saving the book's ID to state in the `try...catch` block! 
+
+* `SavedBooks.js`:
+
+	* Remove the `useEffect()` Hook that sets the state for `UserData`.
+
+	* Instead, use the `useQuery()` Hook to execute the `GET_ME` query on load and save it to a variable named `userData`.
+
+	* Use the `useMutation()` Hook to execute the `REMOVE_BOOK` mutation in the `handleDeleteBook()` function instead of the `deleteBook()` function that's imported from `API` file. (Make sure you keep the `removeBookId()` function in place!)
+
+* `SignupForm.js`: Replace the `addUser()` functionality imported from the `API` file with the `ADD_USER` mutation functionality.
+
+* `LoginForm.js`: Replace the `loginUser()` functionality imported from the `API` file with the `LOGIN_USER` mutation functionality.
+
+
+## Grading Requirements
+
+> **Note**: If a homework assignment submission is marked as “0”, it is considered incomplete and will not count towards your graduation requirements. Examples of incomplete submissions include the following:
+>
+> * A repository that has no code
+>
+> * A repository that includes a unique name but nothing else
+>
+> * A repository that includes only a README file but nothing else
+>
+> * A repository that only includes starter code
+
+This homework is graded based on the following criteria:
+
+### Technical Acceptance Criteria: 40%
+
+* Satisfies all of the preceding acceptance criteria plus the following:
+
+	* Has an Apollo Server that uses GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
+
+	* Use an Apollo Server and apply it to the Express.js server as middleware.
+
+	* Include schema settings for resolvers and typeDefs as outlined in the homework instructions.
+
+	* Modify the existing authentication middleware to work in the context of a GraphQL API.
+
+	* Use an Apollo Provider so that the application can communicate with the Apollo Server.
+
+	* Application must be deployed to Heroku.
+
+
+### Deployment: 32%
+
+* Application deployed at live URL.
+
+* Application loads with no errors.
+
+* Application GitHub URL submitted.
+
+* GitHub repository contains application code.
+
+
+### Application Quality: 15%
+
+* User experience is intuitive and easy to navigate.
+
+* User interface style is clean and polished.
+
+* Application resembles the mock-up functionality provided in the homework instructions.
+
+
+### Repository Quality: 13%
+
+* Repository has a unique name.
+
+* Repository follows best practices for file structure and naming conventions.
+
+* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
+
+* Repository contains multiple descriptive commit messages.
+
+* Repository contains high-quality README file with description, screenshot, and link to the deployed application.
+
+
+## Review
+
+You are required to submit BOTH of the following for review:
+
+* The URL of the functional, deployed application.
+
+* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
 
 ---
 © 2022 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
