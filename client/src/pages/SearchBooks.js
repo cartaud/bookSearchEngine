@@ -10,7 +10,7 @@ import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 const SearchBooks = () => {
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
-  const [saveBook, { error }] = useMutation(SAVE_BOOK)
+  const [saveBook] = useMutation(SAVE_BOOK)
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
 
@@ -68,13 +68,9 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook({
+      saveBook({
         variables: {bookToSave, token}
       });
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
@@ -84,7 +80,7 @@ const SearchBooks = () => {
   };
 
   return (
-    <>
+    <div>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
           <h1>Search for Books!</h1>
@@ -143,7 +139,7 @@ const SearchBooks = () => {
           })}
         </CardColumns>
       </Container>
-    </>
+    </div>
   );
 };
 
