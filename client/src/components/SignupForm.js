@@ -17,7 +17,7 @@ const SignupForm = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
-  };
+  }; // what is the purpose of adding ...userFormData to setUserFormData???
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -28,7 +28,7 @@ const SignupForm = () => {
       event.preventDefault();
       event.stopPropagation();
     }
-
+    console.log(userFormData)
     try {
       const { data } = await createUser({
         variables: {...userFormData}
@@ -52,7 +52,7 @@ const SignupForm = () => {
   };
 
   return (
-    <>
+    <div>
       {/* This is needed for the validation functionality above */}
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         {/* show alert if server response is bad */}
@@ -105,7 +105,7 @@ const SignupForm = () => {
           Submit
         </Button>
       </Form>
-    </>
+    </div>
   );
 };
 

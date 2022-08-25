@@ -25,24 +25,39 @@ export const ADD_USER = gql`
 `;
 
 export const SAVE_BOOK = gql`
-  mutation saveBook($body: bookBody!) {
-    saveBook(body: $body) {
+  mutation saveBook($bookToSave: bookBody!) {
+    saveBook(bookToSave: $bookToSave) {
       _id
       username
-      savedBooks
+      savedBooks {
+        bookId
+        authors
+        description
+        title
+        image
+        link
       }
     }
   }
 `;
-//not sure if username and books is what we want to respond with
+
 export const REMOVE_BOOK = gql`
   mutation removeBook($bookId: String!) {
     removeBook(bookId: $bookId) {
-      _id
-      username
-      books
+      savedBooks {
+        bookId
+        authors
+        description
+        title
+        image
+        link
       }
     }
   }
 `;
-//might need to change save and remove methods to _id user { username savedBooks}
+//might need to change save and remove methods to 
+//_id 
+//user { 
+  //username 
+  //savedBooks
+//}

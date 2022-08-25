@@ -1,15 +1,20 @@
 import { gql } from '@apollo/client'
 
 export const GET_ME = gql`
-  query me {
-    me {
-      _id
-      username
-      savedBooks
+query me {
+  me {
+    _id
+    username
+    email
+    bookCount
+    savedBooks {
+      bookId
+      authors
+      description
+      title
+      image
+      link
     }
   }
-`
-//savedBooks instead of books??
-export const searchGoogleBooks = (query) => {
-    return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
-  };
+}
+`//can I just write saveBooks?
